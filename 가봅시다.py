@@ -14,7 +14,7 @@ def pause():
         pass
 
 
-def wait_file(path, timeout=240):
+def wait_file(path, timeout=500):
     """파일 생성될 때까지 기다림"""
     print(f"[WAIT] {path} 생성 대기 중...")
 
@@ -49,7 +49,7 @@ try:
     # -----------------------------
     lane_file = f"{enemy}_lane_kill.csv"
 
-    if not wait_file(lane_file, timeout=240):
+    if not wait_file(lane_file, timeout=500):
         print("❌ 라인킬 파일 생성 실패")
         pause()
         exit()
@@ -65,7 +65,7 @@ try:
 
     mastery_file = "opgg_mastery_final.csv"
 
-    if not wait_file(mastery_file, timeout=240):
+    if not wait_file(mastery_file, timeout=500):
         print("❌ 숙련도 파일 생성 실패")
         pause()
         exit()
