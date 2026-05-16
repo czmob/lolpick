@@ -14,7 +14,7 @@ def pause():
         pass
 
 
-def wait_file(path, timeout=60):
+def wait_file(path, timeout=240):
     """파일 생성될 때까지 기다림"""
     print(f"[WAIT] {path} 생성 대기 중...")
 
