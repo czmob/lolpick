@@ -57,12 +57,9 @@ def build_url(enemy, champ):
 
 # ==========================================
 # Lane Kill Rate 추출
-# - 보라색 값이 있으면 그대로 사용
-# - 없으면 첫 번째 퍼센트를 읽고 100 - 값
 # ==========================================
 def extract_lane_kill(page):
     try:
-        # 1) 보라색 강조값 탐색
         selector = "span.absolute.bottom-3.right-0.font-bold.text-purple-500"
         elements = page.locator(selector)
 
@@ -75,14 +72,11 @@ def extract_lane_kill(page):
                 if 30 <= value <= 75:
                     return value
 
-        # 2) body 전체에서 퍼센트 찾기
         body = page.locator("body").inner_text()
         matches = re.findall(r"(\d+(?:\.\d+)?)%", body)
 
         for value in matches:
             v = float(value)
-
-            # Lane Kill Rate로 가능한 범위
             if 30 <= v <= 75:
                 return round(100 - v, 2)
 
@@ -92,7 +86,7 @@ def extract_lane_kill(page):
         return None
 
 # ==========================================
-# HTTP 429 감지
+# 429 감지
 # ==========================================
 def is_rate_limited(page):
     try:
@@ -146,7 +140,6 @@ def run(enemy):
                     page.goto(url, wait_until="domcontentloaded")
                     page.wait_for_timeout(3000)
 
-                    # 429 차단 감지
                     if is_rate_limited(page):
                         print("⏳ HTTP 429 감지 → 60초 대기")
                         time.sleep(60)
@@ -170,37 +163,29 @@ def run(enemy):
                 "lane_kill_rate": rate
             })
 
-            # 요청 간격
             time.sleep(2)
 
         browser.close()
 
-    # DataFrame 생성
     df = pd.DataFrame(results)
-
-    # None 제거
     df = df.dropna(subset=["lane_kill_rate"])
 
-    # 데이터 없으면 빈 CSV 저장
+    filename = f"{enemy}_lane_kill.csv"
+
     if df.empty:
         print("\n❌ 추출된 데이터가 없습니다.")
-        filename = f"{enemy}_lane_kill.csv"
         df.to_csv(filename, index=False, encoding="utf-8-sig")
         print(f"💾 빈 CSV 저장 완료: {filename}")
         return
 
-    # 정렬
     df = df.sort_values(
         by="lane_kill_rate",
         ascending=False
     ).reset_index(drop=True)
 
-    # 결과 출력
     print("\n🔥 TOP 10")
     print(df.head(10))
 
-    # CSV 저장
-    filename = f"{enemy}_lane_kill.csv"
     df.to_csv(filename, index=False, encoding="utf-8-sig")
 
     print(f"\n💾 CSV 저장 완료: {filename}")
@@ -211,14 +196,10 @@ def run(enemy):
 # ==========================================
 if __name__ == "__main__":
     try:
-        enemy = input("상대 챔피언 입력: ").strip()
+        enemy = ""
         run(enemy)
 
     except Exception as e:
         print("\n❌ 오류 발생:")
         print(type(e).__name__, "-", e)
-        print()
         traceback.print_exc()
-
-    finally:
-        input("\n엔터 누르면 종료")
