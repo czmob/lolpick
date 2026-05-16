@@ -7,7 +7,11 @@ import traceback
 
 
 def pause():
-    input("\n엔터 누르면 종료")
+    # Streamlit / 서버 환경 안전 처리
+    try:
+        input("\n엔터 누르면 종료")
+    except:
+        pass
 
 
 def wait_file(path, timeout=60):
@@ -26,10 +30,10 @@ def wait_file(path, timeout=60):
 
 try:
     # -----------------------------
-    # 1. 입력
+    # 1. 입력 (삭제됨)
     # -----------------------------
-    enemy = input("상대 챔피언: ").strip()
-    riot_id = input("내 Riot ID (name#kr1): ").strip()
+    enemy = ""
+    riot_id = ""
 
 
     # -----------------------------
@@ -84,7 +88,6 @@ try:
     elif "champ" not in lane.columns:
         raise Exception("lane 컬럼 오류")
 
-    # 이름 정리
     def normalize(x):
         return x.lower().replace(" ", "").replace(".", "").replace("'", "")
 
@@ -100,7 +103,6 @@ try:
     df = pd.merge(mastery, lane, on="champ", how="inner")
 
     print("[DEBUG] merge rows:", len(df))
-
 
     if df.empty:
         print("\n❌ MERGE 실패 (챔피언 이름 불일치)")
