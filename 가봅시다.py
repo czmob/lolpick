@@ -7,7 +7,6 @@ import traceback
 
 
 def pause():
-    # Streamlit / 서버 환경 안전 처리
     try:
         input("\n엔터 누르면 종료")
     except:
@@ -15,7 +14,6 @@ def pause():
 
 
 def wait_file(path, timeout=500):
-    """파일 생성될 때까지 기다림"""
     print(f"[WAIT] {path} 생성 대기 중...")
 
     for i in range(timeout):
@@ -30,10 +28,10 @@ def wait_file(path, timeout=500):
 
 try:
     # -----------------------------
-    # 1. 입력 (삭제됨)
+    # 1. 입력 (핵심 수정)
     # -----------------------------
-    enemy = ""
-    riot_id = ""
+    enemy = input("상대 챔피언: ").strip().lower()
+    riot_id = input("내 Riot ID (name#kr1): ").strip()
 
 
     # -----------------------------
@@ -41,7 +39,11 @@ try:
     # -----------------------------
     print("\n[1/3] 라인킬 크롤링 실행")
 
-    subprocess.run(["python", "기린다.py"], input=f"{enemy}\n", text=True)
+    subprocess.run(
+        ["python", "기린다.py"],
+        input=enemy,
+        text=True
+    )
 
 
     # -----------------------------
@@ -60,7 +62,11 @@ try:
     # -----------------------------
     print("\n[2/3] 숙련도 크롤링 실행")
 
-    subprocess.run(["python", "개인9.py"], input=f"{riot_id}\n", text=True)
+    subprocess.run(
+        ["python", "개인9.py"],
+        input=riot_id,
+        text=True
+    )
 
 
     mastery_file = "opgg_mastery_final.csv"
