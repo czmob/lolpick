@@ -1,5 +1,6 @@
 streamlit
 pandas
 numpy
-playwright
-playwright-stealth
+requests
+beautifulsoup4
+lxml
