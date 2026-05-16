@@ -2,6 +2,7 @@ import streamlit as st
 import subprocess
 import sys
 import os
+os.system("playwright install")
 os.system("playwright install chromium")
 
 st.title("🎮 LoL Pick Recommender")
