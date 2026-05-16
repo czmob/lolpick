@@ -33,7 +33,6 @@ CHAMP_MAP = {
     "케인": "Kayn",
     "이블린": "Evelynn",
 
-
     # 탑 챔피언 전체
     "카밀": "Camille",
     "초가스": "ChoGath",
@@ -92,7 +91,6 @@ CHAMP_MAP = {
     "카이사": "KaiSa",
     "럭스": "Lux",
     "베이가": "Veigar",
-
 }
 
 
@@ -164,9 +162,6 @@ def crawl(riot_id):
                 if not is_valid_row(text):
                     continue
 
-                # -----------------------------
-                # 🔥 여기만 수정됨 (한글 → 영어)
-                # -----------------------------
                 raw_champ = row.locator("img").first.get_attribute("alt")
                 if not raw_champ:
                     continue
@@ -226,7 +221,7 @@ def make_mastery(df):
 # 실행
 # -----------------------------
 def run():
-    riot_id = input("Riot ID (name#kr1): ")
+    riot_id = ""
 
     df = crawl(riot_id)
 
@@ -234,7 +229,6 @@ def run():
 
     if df.empty:
         print("❌ 데이터 없음 (OP.GG 구조 or 로딩 문제)")
-        input("\n엔터 누르면 종료")
         return
 
     df = make_mastery(df)
@@ -246,8 +240,6 @@ def run():
     df.to_csv("opgg_mastery_final.csv", index=False, encoding="utf-8-sig")
 
     print("\n💾 저장 완료: opgg_mastery_final.csv")
-
-    input("\n엔터 누르면 종료")
 
 
 if __name__ == "__main__":
