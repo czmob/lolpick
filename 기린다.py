@@ -1,7 +1,7 @@
-from playwright.sync_api import sync_playwright
+import requests
 import pandas as pd
-import time
 import re
+from bs4 import BeautifulSoup
 
 TOP_CHAMPIONS = [
     "Aatrox", "Akali", "Camille", "Cho'Gath", "Darius", "Dr. Mundo",
